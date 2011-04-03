@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project name="RMI Lab" default="rmic" basedir=".">
+
+
+  <!-- Standard Directory Identifiers-->
+  <property name="java.dest.dir" value="${basedir}"/>
+
+
+  <!-- RMI Target -->
+  <target name="rmic" >
+    <rmic
+       base="${java.dest.dir}"
+       classname="RemoteCalculator"
+    />
+    <rmic
+       base="${java.dest.dir}"
+       classname="smith.james.chris.chat.server.ChatServer"
+    />
+  </target>
+
+</project>
