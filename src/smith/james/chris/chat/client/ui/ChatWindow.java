@@ -56,7 +56,7 @@ public class ChatWindow extends JFrame implements ActionListener{
 		this.cc = cc;
 		this.name = name;
 		setSize(425, 400);
-
+		setLocationByPlatform(true);
 		setJMenuBar(new Menu());
 		add(jta = new JTextArea(), BorderLayout.CENTER);
 		jta.setEditable(false);
@@ -67,7 +67,15 @@ public class ChatWindow extends JFrame implements ActionListener{
 
 		add(jp, BorderLayout.PAGE_END);
 		jb.addActionListener(this);
-
+		
+		String tmp = name + " chatting with ";
+		
+		for(String s:cc.getUsersInChat(chatId))
+			if(!s.equals(name))
+					tmp += " - " + s;
+		
+		setTitle(tmp);
+		
 		setVisible(true);
 	}
 

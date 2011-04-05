@@ -71,6 +71,15 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 		clients.remove(session.getUsername());
 		return null;
 	}
+	
+	public ArrayList<String> getUsersInChat(int chatId) throws RemoteException{
+		ArrayList<Integer> u = db.getUsersInChat(chatId);
+		ArrayList<String> us = new ArrayList<String>();
+		for(int i:u)
+			us.add(db.getUsername(i));
+		
+		return us;
+	}
 
 	/* (non-Javadoc)
 	 * @see smith.james.chris.chat.server.Server#send(smith.james.chris.chat.messages.Message)

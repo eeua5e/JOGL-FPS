@@ -331,6 +331,7 @@ public class Database {
 			ResultSet rs = isValidLogin.executeQuery();
 			if(rs.next()){
 				login.setInt(1, rs.getInt("id"));
+				login.executeUpdate();
 				return rs.getInt("id");
 			}
 		} catch (SQLException e) { e.printStackTrace(); }

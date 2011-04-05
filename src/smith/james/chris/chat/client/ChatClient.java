@@ -136,6 +136,17 @@ public class ChatClient extends UnicastRemoteObject implements Client {
 		}
 	}
 	
+	public ArrayList<String> getUsersInChat(int chatId){
+		try {
+			return cs.getUsersInChat(chatId);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Gets the buddy list.
 	 *

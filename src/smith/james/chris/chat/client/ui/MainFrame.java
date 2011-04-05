@@ -94,6 +94,8 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 			}
 		} while (!loggedIn);
 
+		setTitle("CS Chatter v1.0 - " + name);
+		
 		cl.updateList(cc.getBuddyList(name));
 	}
 
@@ -243,7 +245,7 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 				try {
 					String bName = jOption("Add Buddy");
 					if(!name.equals(bName))
-						new BuddyReq(cc, new Buddy(name, bName, "")).start();
+						new BuddyReq(cc, new Buddy(name, bName, ""), cl).start();
 				} catch (HeadlessException e) { e.printStackTrace(); }
 			} else if (arg0.getActionCommand().equals("Remove Buddy")) {
 				try {

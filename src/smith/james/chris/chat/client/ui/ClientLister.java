@@ -80,7 +80,7 @@ public class ClientLister extends JPanel{
 	public void addActionListener(ActionListener lis){
 		al = lis;
 		
-		updateTimer = new Timer(10000, lis);
+		updateTimer = new Timer(3000, lis);
 		updateTimer.setActionCommand("updateTimer");
 		updateTimer.start();
 	}
