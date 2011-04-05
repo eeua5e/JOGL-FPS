@@ -1,5 +1,5 @@
 /*
- * 
+ *
  */
 package smith.james.chris.chat.client.ui;
 
@@ -20,23 +20,23 @@ import javax.swing.Timer;
  * The Class ClientLister.
  */
 public class ClientLister extends JPanel{
-	
+
 	/** The al. */
 	private ActionListener al;
-	
+
 	/** The update timer. */
 	private Timer updateTimer;
-	
+
 	/** The l. */
 	private JList l;
-	
+
 	/** The list model. */
 	private DefaultListModel listModel;
 
 	/**
 	 * Instantiates a new client lister.
 	 */
-	public ClientLister(){		
+	public ClientLister(){
 		//Create new List & model
 		listModel = new DefaultListModel();
 		l = new JList(listModel);
@@ -44,12 +44,12 @@ public class ClientLister extends JPanel{
 		JScrollPane jsp = new JScrollPane();
 		jsp.setViewportView(l);
 		jsp.setPreferredSize(new Dimension(235, 335));
-		
+
 		l.setLayoutOrientation(JList.VERTICAL);
 
 		add(jsp, BorderLayout.CENTER);
 	}
-	
+
 	//Updates list data
 	/**
 	 * Update list.
@@ -62,7 +62,7 @@ public class ClientLister extends JPanel{
 		for(String s:users)
 			listModel.addElement(s);
 	}
-	
+
 	//Adds a mouse listener to detect double clicks
 	/* (non-Javadoc)
 	 * @see java.awt.Component#addMouseListener(java.awt.event.MouseListener)
@@ -70,7 +70,7 @@ public class ClientLister extends JPanel{
 	public void addMouseListener(MouseListener lis){
 		l.addMouseListener(lis);
 	}
-	
+
 	//Adds action listener for Timer and runs timer ever 10seconds to update
 	/**
 	 * Adds the action listener.
@@ -79,7 +79,7 @@ public class ClientLister extends JPanel{
 	 */
 	public void addActionListener(ActionListener lis){
 		al = lis;
-		
+		// Update buddy list
 		updateTimer = new Timer(3000, lis);
 		updateTimer.setActionCommand("updateTimer");
 		updateTimer.start();

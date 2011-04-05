@@ -136,6 +136,12 @@ public class ChatClient extends UnicastRemoteObject implements Client {
 		}
 	}
 	
+	/**
+	 * Gets the users in chat.
+	 *
+	 * @param chatId the chat id
+	 * @return the users in chat
+	 */
 	public ArrayList<String> getUsersInChat(int chatId){
 		try {
 			return cs.getUsersInChat(chatId);

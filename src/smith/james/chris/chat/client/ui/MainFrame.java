@@ -75,6 +75,7 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 
 		boolean loggedIn = false;
 
+		// Whilst not logged in, login!
 		do {
 			Details d = SignIn.promptLogin(this);
 			if (d == null) {
@@ -95,8 +96,8 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 		} while (!loggedIn);
 
 		setTitle("CS Chatter v1.0 - " + name);
-		
-		cl.updateList(cc.getBuddyList(name));
+
+		cl.updateList(cc.getBuddyList(name)); // Grab buddylist
 	}
 
 	/* (non-Javadoc)
@@ -104,9 +105,9 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 	 */
 	@Override
 	public void receive(Message m) {
-		if(windows.containsKey(m.getSesId()))
+		if(windows.containsKey(m.getSesId())) // If window open, display message
 			windows.get(m.getSesId()).addMessage(m);
-		else{
+		else{ // Else create window and display message
 			ChatWindow cw = new ChatWindow(cc, m.getSesId(), name);
 			cw.addWindowListener(this);
 			windows.put(m.getSesId(), cw);
@@ -118,7 +119,7 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 	 * @see smith.james.chris.chat.client.MessageHandler#buddyReq(smith.james.chris.chat.messages.Buddy)
 	 */
 	@Override
-	public boolean buddyReq(Buddy b) {
+	public boolean buddyReq(Buddy b) { // Get name of buddy to add
 		return JOptionPane.showConfirmDialog(this,
 				"Would you like to add " + b.getFrom() + "?", "Buddy Request",
 				JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
@@ -128,7 +129,7 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 	 * @see smith.james.chris.chat.client.MessageHandler#buddyRemoved(smith.james.chris.chat.messages.Buddy)
 	 */
 	@Override
-	public void buddyRemoved(Buddy b) {
+	public void buddyRemoved(Buddy b) { // update client list
 		cl.updateList(cc.getBuddyList(name));
 	}
 
@@ -136,7 +137,7 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
+	public void actionPerformed(ActionEvent arg0) { // update client list
 		cl.updateList(cc.getBuddyList(name));
 	}
 
@@ -145,7 +146,7 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getClickCount() == 2){
+		if(e.getClickCount() == 2){ // Open chat window
 			String s = (String)(((JList)e.getSource()).getSelectedValue());
 			if(s != null){
 				int idd = cc.getChatId(new Message(name, -1, "", s));
@@ -238,17 +239,17 @@ public class MainFrame extends JFrame implements MessageHandler, ActionListener,
 		 */
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if (arg0.getActionCommand().equals("Exit")) {
+			if (arg0.getActionCommand().equals("Exit")) { //logout and close
 				cc.logout(s);
 				System.exit(0);
 			} else if (arg0.getActionCommand().equals("Add Buddy")) {
 				try {
 					String bName = jOption("Add Buddy");
-					if(!name.equals(bName))
+					if(!name.equals(bName)) // get person name and request add
 						new BuddyReq(cc, new Buddy(name, bName, ""), cl).start();
 				} catch (HeadlessException e) { e.printStackTrace(); }
 			} else if (arg0.getActionCommand().equals("Remove Buddy")) {
-				try {
+				try { // Remove buddy
 					cc.removeBuddy(new Buddy(name, jOption("Remove Buddy"), ""));
 				} catch (HeadlessException e) { e.printStackTrace(); }
 			}

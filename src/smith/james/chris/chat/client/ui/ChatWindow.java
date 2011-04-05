@@ -67,15 +67,15 @@ public class ChatWindow extends JFrame implements ActionListener{
 
 		add(jp, BorderLayout.PAGE_END);
 		jb.addActionListener(this);
-		
+
 		String tmp = name + " chatting with ";
-		
+
 		for(String s:cc.getUsersInChat(chatId))
 			if(!s.equals(name))
 					tmp += " - " + s;
-		
+
 		setTitle(tmp);
-		
+
 		setVisible(true);
 	}
 
@@ -150,7 +150,7 @@ public class ChatWindow extends JFrame implements ActionListener{
 		public void actionPerformed(ActionEvent arg0) {
 			String nameTo = jOption("Invite Buddy");
 
-			if(nameTo != null || !nameTo.equals(""))
+			if(nameTo != null && !nameTo.equals("")) // Send invite message
 				cc.send(new Message(name, chatId, "has invited you to his chat", nameTo));
 		}
 	}

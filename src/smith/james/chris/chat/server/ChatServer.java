@@ -42,7 +42,7 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	 */
 	@Override
 	public boolean register(String username, String password) throws RemoteException {
-		if(!db.isRegistered(username)){
+		if(!db.isRegistered(username)){ // IF user not registered, register
 			db.register(username, password);
 			return true;
 		}
@@ -54,10 +54,10 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	 */
 	@Override
 	public Session login(Client c, String username, String password) throws RemoteException {
-		int id = db.login(username, password);
+		int id = db.login(username, password); //Login
 		if(id != -1){
 			clients.put(username, c);
-			return new Session(username, id);
+			return new Session(username, id); // If successful, return session id
 		}
 		return null;
 	}
@@ -67,17 +67,20 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	 */
 	@Override
 	public Session logout(Session session) throws RemoteException {
-		db.logout(session.getSessionId());
+		db.logout(session.getSessionId()); // Logout
 		clients.remove(session.getUsername());
 		return null;
 	}
-	
+
+	/* (non-Javadoc)
+	 * @see smith.james.chris.chat.server.Server#getUsersInChat(int)
+	 */
 	public ArrayList<String> getUsersInChat(int chatId) throws RemoteException{
-		ArrayList<Integer> u = db.getUsersInChat(chatId);
+		ArrayList<Integer> u = db.getUsersInChat(chatId); // Grab user id's
 		ArrayList<String> us = new ArrayList<String>();
 		for(int i:u)
 			us.add(db.getUsername(i));
-		
+
 		return us;
 	}
 
@@ -86,27 +89,27 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	 */
 	@Override
 	public int send(Message mes) throws RemoteException {
-
+		// If message with no session id and they are a friend
 		if(mes.getSesId() == -1 && db.isBuddy(db.getUserID(mes.getFrom()), db.getUserID(mes.getTo()))){
 			int id = db.addChat(""+Math.random()*1000);
-			db.addUserToChat(id, db.getUserID(mes.getTo()));
+			db.addUserToChat(id, db.getUserID(mes.getTo())); // create new chat and add
 			db.addUserToChat(id, db.getUserID(mes.getFrom()));
 			try{
-				mes.setSesId(id);
-				clients.get(mes.getTo()).receive(mes);
+				mes.setSesId(id); // Set the session id
+				clients.get(mes.getTo()).receive(mes); // send to participants
 				clients.get(mes.getFrom()).receive(mes);
 			}catch(RemoteException re){
-				clients.remove(mes.getTo());
+				clients.remove(mes.getTo()); // If fails, remove user
 			}
-			return id;
+			return id; // return chat session id
 		}else{
-			if(mes.getTo() != null){
+			if(mes.getTo() != null){ // if sending to a user
 				if(db.isOnline(db.getUserID(mes.getTo()))){
 					db.addUserToChat(mes.getSesId(), db.getUserID(mes.getTo()));
-					clients.get(mes.getTo()).receive(mes);
+					clients.get(mes.getTo()).receive(mes); // add them to chat
 				}
 			}else{
-				for(int i:db.getUsersInChat(mes.getSesId())){
+				for(int i:db.getUsersInChat(mes.getSesId())){ //else send to all users in chat session
 					if(db.isOnline(i)){
 						try{
 							clients.get(db.getUsername(i)).receive(mes);
@@ -127,8 +130,8 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	@Override
 	public boolean buddyRequest(Buddy b) throws RemoteException {
 		try{
-			if(clients.get(b.getTo()).buddyRequest(b))
-				db.addBuddy(db.getUserID(b.getFrom()), db.getUserID(b.getTo()));
+			if(clients.get(b.getTo()).buddyRequest(b)) // If person accepts
+				db.addBuddy(db.getUserID(b.getFrom()), db.getUserID(b.getTo())); //Create buddy
 		}catch(NullPointerException e){
 			return false;
 		}
@@ -147,7 +150,7 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 
 		db.removeBuddy(db.getUserID(b.getFrom()), db.getUserID(b.getTo()));
 
-		if(rm){
+		if(rm){ // remove buddy
 			clients.get(b.getFrom()).buddyRemoved(b);
 			if(db.isOnline(db.getUserID(b.getTo())))
 				clients.get(b.getTo()).buddyRemoved(b);
@@ -162,7 +165,7 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 			throws RemoteException {
 		ArrayList<Integer> buds = db.getBuddyList(db.getUserID(username));
 		ArrayList<String> bs = new ArrayList<String>();
-		for(int i:buds)
+		for(int i:buds) // Return buddy list
 			bs.add(db.getUsername(i));
 
 		return bs;
@@ -190,7 +193,7 @@ public class ChatServer extends UnicastRemoteObject implements Server {
 	 */
 	@Override
 	public int getChatId(Message mes) throws RemoteException {
-		int id = db.addChat(""+Math.random()*1000);
+		int id = db.addChat(""+Math.random()*1000); // Create new chat add users to chat
 		db.addUserToChat(id, db.getUserID(mes.getTo()));
 		db.addUserToChat(id, db.getUserID(mes.getFrom()));
 		return id;

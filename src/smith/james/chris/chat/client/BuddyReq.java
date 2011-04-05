@@ -18,6 +18,7 @@ public class BuddyReq extends Thread {
 	/** The b. */
 	private Buddy b;
 	
+	/** The cl. */
 	private ClientLister cl;
 
 	/**
@@ -25,6 +26,7 @@ public class BuddyReq extends Thread {
 	 *
 	 * @param cc the cc
 	 * @param b the b
+	 * @param cl the cl
 	 */
 	public BuddyReq(ChatClient cc, Buddy b, ClientLister cl) {
 		this.cc = cc;

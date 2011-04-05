@@ -23,8 +23,8 @@ public class ServerService {
 	 * @throws InterruptedException the interrupted exception
 	 */
 	public static void main(String[] args) throws RemoteException, MalformedURLException, InterruptedException{
-		LocateRegistry.createRegistry(2020);
+		LocateRegistry.createRegistry(2020); // Start Registry on port 2020
 		ChatServer chatServ = new ChatServer();
-		Naming.rebind("//localhost:2020/chatServ", chatServ);
+		Naming.rebind("//localhost:2020/chatServ", chatServ); // Bind server to it
 	}
 }

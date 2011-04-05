@@ -109,5 +109,12 @@ public interface Server extends Remote {
 	 */
 	public ArrayList<String> getClientList() throws RemoteException;
 	
+	/**
+	 * Gets the users in chat.
+	 *
+	 * @param chatId the chat id
+	 * @return the users in chat
+	 * @throws RemoteException the remote exception
+	 */
 	public ArrayList<String> getUsersInChat(int chatId) throws RemoteException;
 }
